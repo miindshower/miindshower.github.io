@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Charlie — Game Systems Portfolio</title>
+  <meta name="description" content="Portfolio featuring a cooperative crafting game built with Roblox + Luau: server-authoritative systems, clean UI, and designer-friendly collectables." />
+  <meta property="og:title" content="Charlie — Game Systems Portfolio" />
+  <meta property="og:description" content="Co-op crafting systems, server authority, inventory, recipes, collectables, and effects on Roblox." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: #111318;
+      --muted: #a3a3a3;
+      --text: #f5f7fb;
+      --brand: #0ea5e9;
+      --brand-2:#38bdf8;
+      --ring: rgba(56,189,248,.35);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f8fafc; --panel:#ffffff; --muted:#475569; --text:#0f172a;
+        --shadow: 0 10px 24px rgba(2,8,23,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background: radial-gradient(1200px 400px at 10% -5%, rgba(14,165,233,.15), transparent 60%), var(--bg);
+      letter-spacing:.2px;
+    }
+    .container{max-width:1100px; margin:0 auto; padding:28px;}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:8px; margin-bottom:18px;
+    }
+    .logo{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);
+    }
+    .logo-badge{
+      width:38px; height:38px; border-radius:12px; display:grid; place-items:center;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; font-weight:800; box-shadow: var(--shadow);
+    }
+    .nav a{color:var(--muted); text-decoration:none; margin-left:16px; font-weight:600}
+    .nav a:hover{color:var(--text)}
+    .hero{
+      background: linear-gradient(180deg, rgba(56,189,248,.06), transparent 60%);
+      border:1px solid rgba(56,189,248,.15);
+      border-radius: var(--radius);
+      padding:28px; box-shadow: var(--shadow);
+    }
+    h1{font-size:clamp(26px, 4vw, 40px); line-height:1.15; margin:4px 0 12px}
+    .tagline{color:var(--muted); font-size:clamp(14px, 2.2vw, 18px)}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
+      background: rgba(56,189,248,.12); color:#cfefff; border:1px solid rgba(56,189,248,.2);
+      font-weight:600; letter-spacing:.3px; margin-bottom:14px;
+    }
+    .content{margin-top:16px; max-width:75ch}
+    .content p{margin:0 0 12px; color:var(--text)}
+    .grid{
+      display:grid; gap:18px; margin-top:22px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card{
+      grid-column: span 12;
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.02)), var(--panel);
+      border:1px solid rgba(148,163,184,.18);
+      border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .card:hover{ transform: translateY(-2px); border-color: rgba(56,189,248,.35); box-shadow: 0 16px 36px rgba(15,23,42,.30);}
+    .card-body{padding:18px}
+    .eyebrow{color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase}
+    .card h3{margin:6px 0 8px; font-size:22px}
+    .card p{margin:0; color: var(--muted)}
+    .video-wrap{position:relative; aspect-ratio: 16 / 9; background:#0b0f17}
+    .video-wrap iframe, .video-wrap video{position:absolute; inset:0; width:100%; height:100%; border:0; border-top-left-radius: var(--radius); border-top-right-radius: var(--radius)}
+    .meta{display:flex; gap:10px; align-items:center; margin-top:10px; color:var(--muted); font-size:13px}
+    .dot{width:6px; height:6px; border-radius:999px; background:var(--brand)}
+    footer{color:var(--muted); margin:34px 0 12px; text-align:center; font-size:14px}
+    /* responsive columns */
+    @media (min-width:700px){
+      .card.span-6{grid-column: span 6}
+      .card.span-4{grid-column: span 4}
+    }
+    /* focus styles */
+    a, button, .card{outline:none}
+    .card:focus-within{box-shadow: 0 0 0 4px var(--ring)}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Charlie",
+    "url":"https://YOUR_GITHUB_USERNAME.github.io",
+    "jobTitle":"Gameplay/Systems Engineer",
+    "knowsAbout":["Roblox","Luau","Networking","UI Engineering","Game Systems"],
+    "worksFor":{"@type":"Organization","name":"Independent"}
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="logo" href="#">
+        <span class="logo-badge">C</span>
+        <div>
+          <strong style="display:block; font-size:18px">Charlie</strong>
+          <span style="color:var(--muted); font-size:13px">Gameplay / Systems • Roblox &amp; Luau</span>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#project">Project</a>
+        <a href="#work">Showcase</a>
+        <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <section id="project" class="hero" role="region" aria-labelledby="hero-title">
+      <span class="pill">Featured Project · Roblox + Luau</span>
+      <h1 id="hero-title">Co-op Crafting Game — Server-Authoritative Systems & Clear UX</h1>
+      <p class="tagline">Inventory, recipes, collectables, and celebration effects—built for fairness, speed, and designer friendliness.</p>
+      <div class="content">
+        <p>I built the core systems for a cooperative crafting game on Roblox, focusing on smooth gameplay and server-side security. The inventory runs on the server, sends clean snapshots to clients, and mirrors items into in-game tools so players always know what they own. A recipe tracker validates submissions and updates a large shared “Wanting Screen” with clear text and color-coded progress.</p>
+        <p>Collectables are easy to expand: tag an object and it becomes pickable with a prompt, then it automatically respawns around the map. A celebration flow rewards players with currency, plays effects, and resets the screen when a recipe is complete. Together, these choices keep the game fair, responsive, and easy to build on.</p>
+      </div>
+    </section>
+
+    <section id="work" aria-labelledby="work-title" style="margin-top:24px">
+      <h2 id="work-title" style="margin:4px 0 14px; font-size:22px">Project Cards</h2>
+      <div class="grid">
+        <!-- CARD 1 -->
+        <article class="card span-6" aria-labelledby="card1-title">
+          <div class="video-wrap" aria-hidden="true">
+            <!-- Replace VIDEO_ID_HERE with your YouTube ID, e.g., dQw4w9WgXcQ -->
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                    title="Co-op Crafting Loop — Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <span class="eyebrow">Gameplay Loop</span>
+            <h3 id="card1-title">Co-op Crafting Loop</h3>
+            <p>The shared “Wanting Screen” shows the active recipe, while submissions update only the affected row and smoothly shift colors from red to green to show progress in real time.</p>
+            <div class="meta"><span class="dot"></span><span>Server-validated hand-ins</span></div>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="card span-6" aria-labelledby="card2-title">
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                    title="Inventory & Tools — Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <span class="eyebrow">Systems</span>
+            <h3 id="card2-title">Inventory & Tools</h3>
+            <p>A single server-side update path adjusts counts, pushes full snapshots to the client, and creates/updates Tools so players get diegetic feedback that always matches reality.</p>
+            <div class="meta"><span class="dot"></span><span>Anti-cheat by design</span></div>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="card span-6" aria-labelledby="card3-title">
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                    title="Collectables System — Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <span class="eyebrow">Content Pipeline</span>
+            <h3 id="card3-title">Collectables System</h3>
+            <p>Designers can tag any part as “Collectable” to auto-add prompts and a respawn routine that scatters clones across the map, making the world feel stocked and alive.</p>
+            <div class="meta"><span class="dot"></span><span>Zero code for new nodes</span></div>
+          </div>
+        </article>
+
+        <!-- CARD 4 -->
+        <article class="card span-6" aria-labelledby="card4-title">
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                    title="Victory Effects — Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <span class="eyebrow">Feedback</span>
+            <h3 id="card4-title">Victory Effects</h3>
+            <p>Completion triggers a synchronized payout, sound, and particle burst timed to the audio, then rolls the next recipe so teams keep momentum.</p>
+            <div class="meta"><span class="dot"></span><span>Motivating end-of-goal moment</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Charlie · Built with love, CSS, and a sprinkle of gradients.
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
