@@ -3,211 +3,239 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Charlie — Game Systems Portfolio</title>
-  <meta name="description" content="Portfolio featuring a cooperative crafting game built with Roblox + Luau: server-authoritative systems, clean UI, and designer-friendly collectables." />
-  <meta property="og:title" content="Charlie — Game Systems Portfolio" />
-  <meta property="og:description" content="Co-op crafting systems, server authority, inventory, recipes, collectables, and effects on Roblox." />
-  <meta property="og:type" content="website" />
+  <title>Game Systems Portfolio</title>
+  <meta name="description" content="Roblox projects: Wanting Machine, Speedrun Obby, Unlimited Wordle, and more." />
   <meta name="theme-color" content="#0ea5e9" />
+<style>
+    .bg-geom {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .bg-geom svg {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+    }
+</style>
+<script>
+    // Animate geometric shapes on SVG background
+    document.addEventListener('DOMContentLoaded', () => {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("width", "100vw");
+        svg.setAttribute("height", "100vh");
+        svg.setAttribute("viewBox", "0 0 1920 1080");
+        svg.style.position = "absolute";
+        svg.style.top = "0";
+        svg.style.left = "0";
+        svg.style.opacity = "0.18";
+        // Create subtle moving polygons/circles
+        const shapes = [];
+        for (let i = 0; i < 7; i++) {
+            const cx = Math.random() * 1920;
+            const cy = Math.random() * 1080;
+            const r = 120 + Math.random() * 80;
+            const poly = document.createElementNS(svgNS, "polygon");
+            const sides = 5 + Math.floor(Math.random() * 3);
+            let points = "";
+            for (let j = 0; j < sides; j++) {
+                const angle = (2 * Math.PI * j) / sides;
+                const px = cx + r * Math.cos(angle);
+                const py = cy + r * Math.sin(angle);
+                points += `${px},${py} `;
+            }
+            poly.setAttribute("points", points.trim());
+            poly.setAttribute("fill", "#38bdf8");
+            poly.setAttribute("opacity", "0.12");
+            svg.appendChild(poly);
+            shapes.push({el: poly, cx, cy, r, sides, phase: Math.random() * Math.PI * 2, speed: 0.2 + Math.random() * 0.2});
+        }
+        for (let i = 0; i < 5; i++) {
+            const circle = document.createElementNS(svgNS, "circle");
+            const cx = Math.random() * 1920;
+            const cy = Math.random() * 1080;
+            const r = 60 + Math.random() * 40;
+            circle.setAttribute("cx", cx);
+            circle.setAttribute("cy", cy);
+            circle.setAttribute("r", r);
+            circle.setAttribute("fill", "#0ea5e9");
+            circle.setAttribute("opacity", "0.09");
+            svg.appendChild(circle);
+            shapes.push({el: circle, cx, cy, r, phase: Math.random() * Math.PI * 2, speed: 0.15 + Math.random() * 0.2, circle: true});
+        }
+        const bgDiv = document.createElement("div");
+        bgDiv.className = "bg-geom";
+        bgDiv.appendChild(svg);
+        document.body.prepend(bgDiv);
 
+        function animate() {
+            const t = performance.now() / 1000;
+            shapes.forEach(s => {
+                if (s.circle) {
+                    const x = s.cx + Math.sin(t * s.speed + s.phase) * 40;
+                    const y = s.cy + Math.cos(t * s.speed + s.phase) * 40;
+                    s.el.setAttribute("cx", x);
+                    s.el.setAttribute("cy", y);
+                } else {
+                    let points = "";
+                    for (let j = 0; j < s.sides; j++) {
+                        const angle = (2 * Math.PI * j) / s.sides + Math.sin(t * s.speed + s.phase) * 0.2;
+                        const px = s.cx + (s.r + Math.sin(t * s.speed + j) * 12) * Math.cos(angle);
+                        const py = s.cy + (s.r + Math.cos(t * s.speed + j) * 12) * Math.sin(angle);
+                        points += `${px},${py} `;
+                    }
+                    s.el.setAttribute("points", points.trim());
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+</script>
   <style>
     :root{
-      --bg: #0b0c10;
-      --panel: #111318;
-      --muted: #a3a3a3;
-      --text: #f5f7fb;
-      --brand: #0ea5e9;
-      --brand-2:#38bdf8;
-      --ring: rgba(56,189,248,.35);
-      --radius: 18px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg:#0b0c10; --panel:#111318; --muted:#a3a3a3; --text:#f5f7fb;
+      --brand:#0ea5e9; --brand-2:#38bdf8; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f8fafc; --panel:#ffffff; --muted:#475569; --text:#0f172a;
-        --shadow: 0 10px 24px rgba(2,8,23,.08);
-      }
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text); background: radial-gradient(1200px 400px at 10% -5%, rgba(14,165,233,.15), transparent 60%), var(--bg);
-      letter-spacing:.2px;
-    }
+    body{margin:0; font:16px/1.55 system-ui, sans-serif; color:var(--text); background:var(--bg);}
     .container{max-width:1100px; margin:0 auto; padding:28px;}
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:8px; margin-bottom:18px;
-    }
-    .logo{
-      display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);
-    }
-    .logo-badge{
-      width:38px; height:38px; border-radius:12px; display:grid; place-items:center;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; font-weight:800; box-shadow: var(--shadow);
-    }
-    .nav a{color:var(--muted); text-decoration:none; margin-left:16px; font-weight:600}
-    .nav a:hover{color:var(--text)}
-    .hero{
-      background: linear-gradient(180deg, rgba(56,189,248,.06), transparent 60%);
-      border:1px solid rgba(56,189,248,.15);
-      border-radius: var(--radius);
-      padding:28px; box-shadow: var(--shadow);
-    }
-    h1{font-size:clamp(26px, 4vw, 40px); line-height:1.15; margin:4px 0 12px}
-    .tagline{color:var(--muted); font-size:clamp(14px, 2.2vw, 18px)}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
-      background: rgba(56,189,248,.12); color:#cfefff; border:1px solid rgba(56,189,248,.2);
-      font-weight:600; letter-spacing:.3px; margin-bottom:14px;
-    }
-    .content{margin-top:16px; max-width:75ch}
-    .content p{margin:0 0 12px; color:var(--text)}
-    .grid{
-      display:grid; gap:18px; margin-top:22px;
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .card{
-      grid-column: span 12;
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.02)), var(--panel);
-      border:1px solid rgba(148,163,184,.18);
-      border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
-      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-    }
-    .card:hover{ transform: translateY(-2px); border-color: rgba(56,189,248,.35); box-shadow: 0 16px 36px rgba(15,23,42,.30);}
-    .card-body{padding:18px}
-    .eyebrow{color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase}
-    .card h3{margin:6px 0 8px; font-size:22px}
-    .card p{margin:0; color: var(--muted)}
-    .video-wrap{position:relative; aspect-ratio: 16 / 9; background:#0b0f17}
-    .video-wrap iframe, .video-wrap video{position:absolute; inset:0; width:100%; height:100%; border:0; border-top-left-radius: var(--radius); border-top-right-radius: var(--radius)}
-    .meta{display:flex; gap:10px; align-items:center; margin-top:10px; color:var(--muted); font-size:13px}
-    .dot{width:6px; height:6px; border-radius:999px; background:var(--brand)}
-    footer{color:var(--muted); margin:34px 0 12px; text-align:center; font-size:14px}
-    /* responsive columns */
-    @media (min-width:700px){
-      .card.span-6{grid-column: span 6}
-      .card.span-4{grid-column: span 4}
-    }
-    /* focus styles */
-    a, button, .card{outline:none}
-    .card:focus-within{box-shadow: 0 0 0 4px var(--ring)}
+    header{display:flex; justify-content:space-between; align-items:center;}
+    .logo{display:flex; gap:10px; align-items:center; text-decoration:none; color:var(--text);}
+    .logo-badge{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2)); font-weight:800;}
+    .nav a{margin-left:16px; text-decoration:none; color:var(--muted);}
+    .hero{margin-top:24px; padding:24px; border-radius:var(--radius); background:var(--panel);}
+    h1{margin:0 0 12px;}
+    .grid{display:grid; gap:20px; margin-top:24px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+    .card{background:var(--panel); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);}
+    .video-wrap{position:relative; aspect-ratio:16/9; background:#000;}
+    .video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+    .card-body{padding:16px;}
+    .card h3{margin:0 0 8px;}
+    .card p{margin:0 0 10px; color:var(--muted);}
+    .sub{color:#cbd5e1; margin:0 0 8px; font-weight:700}
+    ul{margin:0 0 10px 18px; color:var(--muted)}
+    details{border:1px solid rgba(148,163,184,.2); border-radius:12px; padding:10px 12px; background:#0f1117}
+    details summary{cursor:pointer; font-weight:700; color:#e2e8f0; margin:-10px -12px 8px; padding:10px 12px}
+    .tag{display:inline-block; font-size:12px; color:#cfefff; background:rgba(56,189,248,.15); border:1px solid rgba(56,189,248,.3); padding:2px 8px; border-radius:999px; margin-right:6px}
+    footer{margin:32px 0; text-align:center; color:var(--muted);}
   </style>
-
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Person",
-    "name":"Charlie",
-    "url":"https://YOUR_GITHUB_USERNAME.github.io",
-    "jobTitle":"Gameplay/Systems Engineer",
-    "knowsAbout":["Roblox","Luau","Networking","UI Engineering","Game Systems"],
-    "worksFor":{"@type":"Organization","name":"Independent"}
-  }
-  </script>
 </head>
 <body>
   <div class="container">
     <header>
       <a class="logo" href="#">
-        <span class="logo-badge">C</span>
-        <div>
-          <strong style="display:block; font-size:18px">Charlie</strong>
-          <span style="color:var(--muted); font-size:13px">Gameplay / Systems • Roblox &amp; Luau</span>
-        </div>
+        <span class="logo-badge">M</span>
+        <strong>Mindshower</strong>
       </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#project">Project</a>
-        <a href="#work">Showcase</a>
-        <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noopener">GitHub</a>
+      <nav class="nav">
+        <a href="#projects">Projects</a>
       </nav>
     </header>
 
-    <section id="project" class="hero" role="region" aria-labelledby="hero-title">
-      <span class="pill">Featured Project · Roblox + Luau</span>
-      <h1 id="hero-title">Co-op Crafting Game — Server-Authoritative Systems & Clear UX</h1>
-      <p class="tagline">Inventory, recipes, collectables, and celebration effects—built for fairness, speed, and designer friendliness.</p>
-      <div class="content">
-        <p>I built the core systems for a cooperative crafting game on Roblox, focusing on smooth gameplay and server-side security. The inventory runs on the server, sends clean snapshots to clients, and mirrors items into in-game tools so players always know what they own. A recipe tracker validates submissions and updates a large shared “Wanting Screen” with clear text and color-coded progress.</p>
-        <p>Collectables are easy to expand: tag an object and it becomes pickable with a prompt, then it automatically respawns around the map. A celebration flow rewards players with currency, plays effects, and resets the screen when a recipe is complete. Together, these choices keep the game fair, responsive, and easy to build on.</p>
-      </div>
+    <section class="hero">
+      <h1>Game Systems Portfolio</h1>
+      <p>
+        I design and develop Roblox games and core systems with a strong emphasis on modularity, optimization, and clarity. My approach is to build features that are easy for beginners to understand, while providing enough flexibility for advanced users to extend and customize.
+      </p>
+      <p>
+        My work covers a range of gameplay mechanics, including inventory management, multiplayer synchronization, UI/UX design, and server-side validation to ensure fair play. I prioritize clean code architecture, reusable components, and robust error handling to make each system reliable and maintainable.
+      </p>
+      <ul>
+        <li><strong>Modular design:</strong> Systems are built as independent modules, allowing for easy integration and updates without breaking existing functionality.</li>
+        <li><strong>Performance:</strong> Scripts are optimized for low latency and minimal resource usage, supporting smooth gameplay even with many concurrent players.</li>
+        <li><strong>Security:</strong> Server authority is enforced to prevent exploits and cheating, with all critical game logic validated on the backend.</li>
+        <li><strong>Documentation:</strong> Each project includes clear comments and guides to help new developers understand the structure and logic.</li>
+      </ul>
+      <p>
+        Below are three featured projects, each demonstrating a different type of game system. For each, you'll find a summary of what the player experiences, followed by a breakdown of the underlying code and design decisions.
+      </p>
     </section>
 
-    <section id="work" aria-labelledby="work-title" style="margin-top:24px">
-      <h2 id="work-title" style="margin:4px 0 14px; font-size:22px">Project Cards</h2>
-      <div class="grid">
-        <!-- CARD 1 -->
-        <article class="card span-6" aria-labelledby="card1-title">
-          <div class="video-wrap" aria-hidden="true">
-            <!-- Replace VIDEO_ID_HERE with your YouTube ID, e.g., dQw4w9WgXcQ -->
-            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                    title="Co-op Crafting Loop — Demo"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="card-body">
-            <span class="eyebrow">Gameplay Loop</span>
-            <h3 id="card1-title">Co-op Crafting Loop</h3>
-            <p>The shared “Wanting Screen” shows the active recipe, while submissions update only the affected row and smoothly shift colors from red to green to show progress in real time.</p>
-            <div class="meta"><span class="dot"></span><span>Server-validated hand-ins</span></div>
-          </div>
-        </article>
+    <section id="projects" class="grid">
+      <!-- Card 1: Wanting Machine -->
+      <article class="card">
+        <div class="video-wrap">
+          <iframe src="https://streamable.com/e/yg6lep?" title="Wanting Machine Demo" allowfullscreen></iframe>
+        </div>
+        <div class="card-body">
+          <span class="tag">Roblox</span><span class="tag">Luau</span>
+          <h3>Wanting Machine</h3>
+          <p><strong>What you see:</strong> A big screen shows the current recipe and ingredients. Players collect items, submit them, and watch the list turn from red to green. When it's done, everyone gets paid and you get a short celebration.</p>
+          <p class="sub">How it works (plain English)</p>
+          <ul>
+            <li><strong>Server keeps the truth:</strong> The server stores inventories and progress so local cheats can't fake items.</li>
+            <li><strong>Inventory & tools:</strong> Picking up items adds them to a server list and gives you matching Tools so your backpack mirrors reality.</li>
+            <li><strong>Submitting:</strong> Your client says “I want to submit X”; the server checks you have it and the recipe needs it, then updates the screen.</li>
+            <li><strong>UI:</strong> Rows are cloned from a template and show “left/total,” with a smooth red→green color change as you progress.</li>
+          </ul>
+          <details>
+            <summary>Deeper dive</summary>
+            <p><strong>Recipes:</strong> Loaded from config, copied into a server checklist that is safe to modify (fast lookups for remaining counts).</p>
+            <p><strong>Collectables:</strong> Tag parts as “Collectable” to auto-add prompts and respawn logic that scatters new copies on a spawn pad.</p>
+            <p><strong>Safety:</strong> Clients send intent only; the server validates, updates state, and sends a clean snapshot back to the UI to avoid desyncs.</p>
+          </details>
+        </div>
+      </article>
 
-        <!-- CARD 2 -->
-        <article class="card span-6" aria-labelledby="card2-title">
-          <div class="video-wrap">
-            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                    title="Inventory & Tools — Demo"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="card-body">
-            <span class="eyebrow">Systems</span>
-            <h3 id="card2-title">Inventory & Tools</h3>
-            <p>A single server-side update path adjusts counts, pushes full snapshots to the client, and creates/updates Tools so players get diegetic feedback that always matches reality.</p>
-            <div class="meta"><span class="dot"></span><span>Anti-cheat by design</span></div>
-          </div>
-        </article>
+      <!-- Card 2: Speedrun Obby -->
+      <article class="card">
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" title="Speedrun Obby Demo" allowfullscreen></iframe>
+        </div>
+        <div class="card-body">
+          <span class="tag">Roblox</span><span class="tag">Luau</span><span class="tag">Leaderboards</span>
+          <h3>Speedrun Obby</h3>
+          <p><strong>What you see:</strong> Step on a START pad to begin the timer, run the course, and hit END to stop it. Your time pops up, personal bests are highlighted, and the stage sign/rig shows the current server record holder.</p>
+          <p class="sub">How it works (plain English)</p>
+          <ul>
+            <li><strong>Stage pads:</strong> Pads are just parts with tags and a shared RunID (e.g., “ClassicObby01”). Matching IDs = one course.</li>
+            <li><strong>Starting a run:</strong> Touching START sets a server attribute and tells your UI to begin the timer.</li>
+            <li><strong>Finishing:</strong> Touching END checks your start time, calculates your run, clears the attribute, and teleports you back to Spawn.</li>
+            <li><strong>Records & PBs:</strong> The script tracks server records and personal bests; beating the record updates the sign and rig.</li>
+          </ul>
+          <details>
+            <summary>Deeper dive (mapping to code)</summary>
+            <p><strong>Player data:</strong> Each player gets TempData with cooldown and spam checks. Particles and collision groups are applied on spawn.</p>
+            <p><strong>Run control:</strong> START pads prevent double-runs and cancel others; END pads check for spamming and calculate times safely.</p>
+            <p><strong>Broadcast:</strong> Finishes are announced to all players with color-coded rich text, and records are saved.</p>
+            <p><strong>Extras:</strong> Random “KillBalls” spawn for fun obstacles; a Tip Jar uses dev products with particle effects when purchased.</p>
+          </details>
+        </div>
+      </article>
 
-        <!-- CARD 3 -->
-        <article class="card span-6" aria-labelledby="card3-title">
-          <div class="video-wrap">
-            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                    title="Collectables System — Demo"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="card-body">
-            <span class="eyebrow">Content Pipeline</span>
-            <h3 id="card3-title">Collectables System</h3>
-            <p>Designers can tag any part as “Collectable” to auto-add prompts and a respawn routine that scatters clones across the map, making the world feel stocked and alive.</p>
-            <div class="meta"><span class="dot"></span><span>Zero code for new nodes</span></div>
-          </div>
-        </article>
+      <!-- Card 3: Unlimited Wordle -->
+      <article class="card">
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" title="Unlimited Wordle Demo" allowfullscreen></iframe>
+        </div>
+        <div class="card-body">
+          <span class="tag">Roblox</span><span class="tag">Luau</span><span class="tag">UI Game</span>
+          <h3>Unlimited Wordle</h3>
+          <p><strong>What you see:</strong> A Roblox twist on Wordle: type guesses, see colored feedback (green/yellow/grey), and play as many rounds as you want. The board resets automatically when the word is solved or you run out of guesses.</p>
+          <p class="sub">How it works (plain English)</p>
+          <ul>
+            <li><strong>Board building:</strong> A hidden row template is cloned for each guess row; each contains tiles (TextLabels) that hold letters.</li>
+            <li><strong>Cursor control:</strong> The script keeps track of the “active” tile so input always goes to the right place.</li>
+            <li><strong>Scoring:</strong> Guesses are compared to the solution; exact matches turn green, present-but-wrong-spot turn yellow, others grey.</li>
+            <li><strong>Replay:</strong> When a round ends, the board clears and a new word is fetched, so it never runs out.</li>
+          </ul>
+          <details>
+            <summary>Deeper dive</summary>
+            <p><strong>Config:</strong> Word length, max guesses, colors, and solution are all defined in one config table for easy tweaking.</p>
+            <p><strong>Logic:</strong> The script uses a two-pass check: first marking exact matches, then marking present letters if available. This matches Wordle’s fairness rules.</p>
+            <p><strong>UI polish:</strong> TweenService animates letters popping in and tiles changing color smoothly, making the game feel snappy.</p>
+            <p><strong>Future-ready:</strong> Hooks exist to validate guesses via a server dictionary, seed daily words, or track win streaks in datastores.</p>
+          </details>
+        </div>
+      </article>
 
-        <!-- CARD 4 -->
-        <article class="card span-6" aria-labelledby="card4-title">
-          <div class="video-wrap">
-            <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                    title="Victory Effects — Demo"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="card-body">
-            <span class="eyebrow">Feedback</span>
-            <h3 id="card4-title">Victory Effects</h3>
-            <p>Completion triggers a synchronized payout, sound, and particle burst timed to the audio, then rolls the next recipe so teams keep momentum.</p>
-            <div class="meta"><span class="dot"></span><span>Motivating end-of-goal moment</span></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <footer>
-      © <span id="year"></span> Charlie · Built with love, CSS, and a sprinkle of gradients.
-    </footer>
   </div>
-
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
